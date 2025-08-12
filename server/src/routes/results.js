@@ -3,7 +3,7 @@ const { auth } = require('../middleware/auth');
 const Enrollment = require('../models/Enrollment');
 const Assessment = require('../models/Assessment');
 const Mark = require('../models/Mark');
-const Course = require('../models/Course');
+// const Course = require('../models/Course');
 const { computeCoursePercent, gradeLetterFromPercent, computeGPA } = require('../utils/grades');
 const PDFDocument = require('pdfkit');
 
