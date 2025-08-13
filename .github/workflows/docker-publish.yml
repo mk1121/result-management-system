@@ -41,6 +41,15 @@ jobs:
           echo "sha_tag=${SHA_TAG}" >> $GITHUB_OUTPUT
           echo "ref_tag=${REF_TAG}" >> $GITHUB_OUTPUT
 
+      - name: Compute client build args
+        id: client_env
+        run: |
+          if [ -n "${{ secrets.VITE_API_URL }}" ]; then
+            echo "vite_api_url=${{ secrets.VITE_API_URL }}" >> $GITHUB_OUTPUT
+          else
+            echo "vite_api_url=${{ vars.VITE_API_URL }}" >> $GITHUB_OUTPUT
+          fi
+
       - name: Build and push server
         uses: docker/build-push-action@v6
         with:
@@ -59,6 +68,8 @@ jobs:
           file: ./client/Dockerfile
           platforms: linux/amd64
           push: true
+          build-args: |
+            VITE_API_URL=${{ steps.client_env.outputs.vite_api_url }}
           tags: |
             ${{ steps.vars.outputs.client_image }}:${{ steps.vars.outputs.sha_tag }}
             ${{ steps.vars.outputs.client_image }}:${{ steps.vars.outputs.ref_tag }}
