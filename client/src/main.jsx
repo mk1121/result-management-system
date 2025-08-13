@@ -194,7 +194,11 @@ function App() {
   );
 }
 
-createRoot(document.getElementById('root')).render(<App />);
+export function RMSApp() { return <App />; }
+const mountNode = typeof document !== 'undefined' ? document.getElementById('root') : null;
+if (mountNode) {
+  createRoot(mountNode).render(<RMSApp />);
+}
 
 function LoginPage({ email, setEmail, password, setPassword, setToken, error, setError }) {
   return (

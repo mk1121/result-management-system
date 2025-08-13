@@ -12,12 +12,10 @@ function auth(requiredRoles = []) {
         return res.status(403).json({ message: 'Forbidden' });
       }
       next();
-    } catch (err) {
+    } catch {
       return res.status(401).json({ message: 'Invalid token' });
     }
   };
 }
 
 module.exports = { auth };
-
-

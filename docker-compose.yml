@@ -8,6 +8,22 @@ services:
       MONGO_INITDB_DATABASE: rms
     volumes:
       - mongo_data:/data/db
+  server:
+    build: ./server
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/rms
+      - JWT_SECRET=${JWT_SECRET:-change_me}
+      - CLIENT_ORIGIN=http://localhost:5173
+    ports:
+      - "4000:4000"
+  client:
+    build: ./client
+    depends_on:
+      - server
+    ports:
+      - "5173:80"
 volumes:
   mongo_data:
 

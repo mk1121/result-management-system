@@ -67,5 +67,3 @@ function computeGPA(results) {
 }
 
 module.exports = { gradeLetterFromPercent, gradePointFromLetter, computeCoursePercent, computeGPA };
-
-

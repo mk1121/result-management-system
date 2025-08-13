@@ -14,9 +14,14 @@ router.post('/login', async (req, res) => {
     const ok = await bcrypt.compare(password, user.passwordHash);
     if (!ok) return res.status(400).json({ message: 'Invalid credentials' });
     const token = jwt.sign(
-      { id: user._id, role: user.role, email: user.email, studentId: user.student ? user.student._id : null },
+      {
+        id: user._id,
+        role: user.role,
+        email: user.email,
+        studentId: user.student ? user.student._id : null,
+      },
       process.env.JWT_SECRET || 'dev_secret',
-      { expiresIn: '7d' }
+      { expiresIn: '7d' },
     );
     res.json({
       token,
@@ -28,7 +33,7 @@ router.post('/login', async (req, res) => {
         name: user.student ? user.student.name : undefined,
       },
     });
-  } catch (err) {
+  } catch {
     res.status(500).json({ message: 'Login failed' });
   }
 });
@@ -44,11 +49,9 @@ router.get('/me', auth(), async (req, res) => {
       studentId: user.student ? user.student._id : null,
       name: user.student ? user.student.name : undefined,
     });
-  } catch (err) {
+  } catch {
     res.status(500).json({ message: 'Failed to fetch profile' });
   }
 });
 
 module.exports = router;
-
-

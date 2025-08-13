@@ -9,7 +9,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint .",
-    "format": "prettier -w ."
+    "format": "prettier -w .",
+    "test": "vitest --run",
+    "test:ui": "vitest"
   },
   "dependencies": {
     "react": "^19.1.1",
@@ -20,13 +22,18 @@
     "@babel/eslint-parser": "^7.28.0",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.33.0",
+    "@testing-library/jest-dom": "^6.6.4",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@vitejs/plugin-react": "^5.0.0",
     "eslint": "^9.33.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-react": "^7.37.5",
     "globals": "^16.3.0",
+    "jsdom": "^26.1.0",
     "prettier": "^3.6.2",
-    "vite": "^7.1.2"
+    "vite": "^7.1.2",
+    "vitest": "^3.2.4"
   }
 }

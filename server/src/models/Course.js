@@ -6,9 +6,7 @@ const courseSchema = new mongoose.Schema(
     title: { type: String, required: true },
     credits: { type: Number, default: 3 },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model('Course', courseSchema);
-
-

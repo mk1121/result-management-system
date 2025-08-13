@@ -50,7 +50,7 @@ router.get('/student/:studentId', auth(['admin', 'teacher', 'student']), async (
     const gpa = computeGPA(courseResults.map((c) => ({ percent: c.percent, credits: c.credits })));
 
     res.json({ results: courseResults, gpa });
-  } catch (err) {
+  } catch {
     res.status(500).json({ message: 'Failed to compute results' });
   }
 });
@@ -83,7 +83,13 @@ router.get('/student/:studentId/pdf', auth(['admin', 'teacher', 'student']), asy
       const aList = assessmentsByCourse.get(String(course._id)) || [];
       const percent = computeCoursePercent(aList, marksByAssessment);
       const letter = gradeLetterFromPercent(percent);
-      rows.push({ code: course.code, title: course.title, percent: Number(percent.toFixed(2)), letter, credits: course.credits });
+      rows.push({
+        code: course.code,
+        title: course.title,
+        percent: Number(percent.toFixed(2)),
+        letter,
+        credits: course.credits,
+      });
     }
     const gpa = computeGPA(rows.map((c) => ({ percent: c.percent, credits: c.credits })));
 
@@ -102,11 +108,9 @@ router.get('/student/:studentId/pdf', auth(['admin', 'teacher', 'student']), asy
     doc.moveDown();
     doc.text(`GPA: ${gpa}`, { align: 'right' });
     doc.end();
-  } catch (err) {
+  } catch {
     res.status(500).json({ message: 'Failed to generate PDF' });
   }
 });
 
 module.exports = router;
-
-

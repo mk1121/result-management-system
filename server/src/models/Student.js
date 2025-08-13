@@ -7,9 +7,7 @@ const studentSchema = new mongoose.Schema(
     program: { type: String, default: '' },
     batch: { type: String, default: '' },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model('Student', studentSchema);
-
-

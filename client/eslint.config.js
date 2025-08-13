@@ -25,6 +25,26 @@ export default [
       'no-unused-vars': ['warn'],
     },
   },
+  {
+    files: ['src/**/__tests__/**/*.{js,jsx}', 'src/**/*.{test,spec}.{js,jsx}'],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: 'module',
+      globals: {
+        ...globals.browser,
+        describe: true,
+        it: true,
+        test: true,
+        expect: true,
+        vi: true,
+        beforeEach: true,
+        beforeAll: true,
+        afterAll: true,
+        global: true,
+      },
+    },
+    rules: {},
+  },
 ];
 
 

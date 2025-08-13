@@ -1,0 +1,13 @@
+#!/bin/sh
+
+echo "Pre-commit: lint (server/client) + client tests"
+
+npm --prefix server run lint || exit 1
+npm --prefix client run lint || exit 1
+
+if [ "$RUN_SERVER_TESTS" = "1" ]; then
+  echo "Running server tests (opt-in)"
+  npm --prefix server test -- --runInBand || exit 1
+fi
+
+npm --prefix client test --run || exit 1

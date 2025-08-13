@@ -7,11 +7,9 @@ const markSchema = new mongoose.Schema(
     assessment: { type: mongoose.Schema.Types.ObjectId, ref: 'Assessment', required: true },
     score: { type: Number, required: true, min: 0 },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 markSchema.index({ student: 1, assessment: 1 }, { unique: true });
 
 module.exports = mongoose.model('Mark', markSchema);
-
-

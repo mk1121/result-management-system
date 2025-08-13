@@ -6,7 +6,9 @@ const Assessment = require('../models/Assessment');
 const router = express.Router();
 
 router.get('/course/:courseId', auth(['admin', 'teacher']), async (req, res) => {
-  const marks = await Mark.find({ course: req.params.courseId }).populate('student assessment').sort({ createdAt: 1 });
+  const marks = await Mark.find({ course: req.params.courseId })
+    .populate('student assessment')
+    .sort({ createdAt: 1 });
   res.json(marks);
 });
 
@@ -21,7 +23,7 @@ router.post('/', auth(['admin', 'teacher']), async (req, res) => {
     const doc = await Mark.findOneAndUpdate(
       { student, assessment },
       { student, course, assessment, score },
-      { new: true, upsert: true, runValidators: true }
+      { new: true, upsert: true, runValidators: true },
     );
     res.status(201).json(doc);
   } catch (err) {
@@ -40,25 +42,33 @@ router.get('/export/:courseId', auth(['admin', 'teacher']), async (req, res) => 
 });
 
 // CSV import (simple): expects text/csv in body
-router.post('/import/:courseId', auth(['admin', 'teacher']), express.text({ type: 'text/csv' }), async (req, res) => {
-  const lines = (req.body || '').trim().split(/\r?\n/);
-  const rows = lines.slice(1); // skip header
-  const ops = rows
-    .map((line) => line.split(','))
-    .filter((cols) => cols.length >= 3)
-    .map(([student, assessment, score]) => ({ student, assessment, score: Number(score), course: req.params.courseId }));
-  const results = [];
-  for (const r of ops) {
-    const doc = await Mark.findOneAndUpdate(
-      { student: r.student, assessment: r.assessment },
-      r,
-      { new: true, upsert: true, runValidators: true }
-    );
-    results.push(doc);
-  }
-  res.json({ count: results.length });
-});
+router.post(
+  '/import/:courseId',
+  auth(['admin', 'teacher']),
+  express.text({ type: 'text/csv' }),
+  async (req, res) => {
+    const lines = (req.body || '').trim().split(/\r?\n/);
+    const rows = lines.slice(1); // skip header
+    const ops = rows
+      .map((line) => line.split(','))
+      .filter((cols) => cols.length >= 3)
+      .map(([student, assessment, score]) => ({
+        student,
+        assessment,
+        score: Number(score),
+        course: req.params.courseId,
+      }));
+    const results = [];
+    for (const r of ops) {
+      const doc = await Mark.findOneAndUpdate({ student: r.student, assessment: r.assessment }, r, {
+        new: true,
+        upsert: true,
+        runValidators: true,
+      });
+      results.push(doc);
+    }
+    res.json({ count: results.length });
+  },
+);
 
 module.exports = router;
-
-

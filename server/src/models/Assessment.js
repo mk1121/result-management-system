@@ -7,11 +7,9 @@ const assessmentSchema = new mongoose.Schema(
     weightPercent: { type: Number, required: true, min: 0, max: 100 },
     maxScore: { type: Number, default: 100 },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 assessmentSchema.index({ course: 1, name: 1 }, { unique: true });
 
 module.exports = mongoose.model('Assessment', assessmentSchema);
-
-

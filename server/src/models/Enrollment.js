@@ -6,11 +6,9 @@ const enrollmentSchema = new mongoose.Schema(
     course: { type: mongoose.Schema.Types.ObjectId, ref: 'Course', required: true },
     semester: { type: String, default: 'S1' },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 enrollmentSchema.index({ student: 1, course: 1 }, { unique: true });
 
 module.exports = mongoose.model('Enrollment', enrollmentSchema);
-
-

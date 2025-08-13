@@ -7,9 +7,7 @@ const userSchema = new mongoose.Schema(
     role: { type: String, enum: ['admin', 'teacher', 'student'], required: true },
     student: { type: mongoose.Schema.Types.ObjectId, ref: 'Student', default: null },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model('User', userSchema);
-
-

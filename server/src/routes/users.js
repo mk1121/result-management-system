@@ -21,17 +21,23 @@ router.post('/student', auth(['admin']), async (req, res) => {
     if (existingEmail) return res.status(400).json({ message: 'Email already in use' });
 
     const existingStudentUser = await User.findOne({ student: studentId });
-    if (existingStudentUser) return res.status(400).json({ message: 'Login already exists for this student' });
+    if (existingStudentUser)
+      return res.status(400).json({ message: 'Login already exists for this student' });
 
     const passwordHash = await bcrypt.hash(password, 10);
-    const user = await User.create({ email: email.toLowerCase(), passwordHash, role: 'student', student: studentId });
+    const user = await User.create({
+      email: email.toLowerCase(),
+      passwordHash,
+      role: 'student',
+      student: studentId,
+    });
 
-    res.status(201).json({ id: user._id, email: user.email, role: user.role, studentId: user.student });
+    res
+      .status(201)
+      .json({ id: user._id, email: user.email, role: user.role, studentId: user.student });
   } catch (err) {
     res.status(400).json({ message: 'Create student login failed', error: err.message });
   }
 });
 
 module.exports = router;
-
-

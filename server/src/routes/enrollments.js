@@ -11,7 +11,7 @@ router.get('/course/:courseId', auth(['admin', 'teacher']), async (req, res) => 
       .populate('course')
       .sort({ createdAt: 1 });
     res.json(list);
-  } catch (err) {
+  } catch {
     res.status(500).json({ message: 'Fetch failed' });
   }
 });
@@ -21,11 +21,9 @@ router.post('/', auth(['admin']), async (req, res) => {
     const { student, course, semester } = req.body;
     const doc = await Enrollment.create({ student, course, semester });
     res.status(201).json(doc);
-  } catch (err) {
-    res.status(400).json({ message: 'Enroll failed', error: err.message });
+  } catch {
+    res.status(400).json({ message: 'Enroll failed' });
   }
 });
 
 module.exports = router;
-
-
