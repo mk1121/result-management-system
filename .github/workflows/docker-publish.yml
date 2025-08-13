@@ -61,6 +61,7 @@ jobs:
             MONGO_URI=${{ secrets.MONGO_URI }}
             JWT_SECRET=${{ secrets.JWT_SECRET }}
             CLIENT_ORIGIN=${{ secrets.CLIENT_ORIGIN }}
+            CLIENT_ORIGINS=${{ secrets.CLIENT_ORIGINS }}
           tags: |
             ${{ steps.vars.outputs.server_image }}:${{ steps.vars.outputs.sha_tag }}
             ${{ steps.vars.outputs.server_image }}:${{ steps.vars.outputs.ref_tag }}
