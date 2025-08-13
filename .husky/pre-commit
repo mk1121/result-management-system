@@ -10,4 +10,4 @@ if [ "$RUN_SERVER_TESTS" = "1" ]; then
   npm --prefix server test -- --runInBand || exit 1
 fi
 
-npm --prefix client test --run || exit 1
+npm --prefix client test || exit 1

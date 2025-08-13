@@ -72,7 +72,7 @@ jobs:
 
       - name: Test
         working-directory: client
-        run: npm test -- --run
+        run: npm test
 
       - name: Build
         working-directory: client
