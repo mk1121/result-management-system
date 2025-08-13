@@ -26,6 +26,15 @@ export default [
     },
   },
   {
+    files: ['vite.config.js'],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: 'module',
+      globals: { ...globals.node },
+    },
+    rules: {},
+  },
+  {
     files: ['src/**/__tests__/**/*.{js,jsx}', 'src/**/*.{test,spec}.{js,jsx}'],
     languageOptions: {
       ecmaVersion: 2022,

@@ -2,9 +2,11 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
+const API_BASE = (import.meta && import.meta.env && import.meta.env.VITE_API_URL) ? import.meta.env.VITE_API_URL : '/api';
+
 const api = {
   async login(email, password) {
-    const res = await fetch('/api/auth/login', {
+    const res = await fetch(`${API_BASE}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
@@ -13,41 +15,41 @@ const api = {
     return res.json();
   },
   async me(token) {
-    const res = await fetch('/api/auth/me', { headers: { Authorization: `Bearer ${token}` } });
+    const res = await fetch(`${API_BASE}/auth/me`, { headers: { Authorization: `Bearer ${token}` } });
     if (!res.ok) throw new Error('Me failed');
     return res.json();
   },
   async results(token, studentId) {
-    const res = await fetch(`/api/results/student/${studentId}`, {
+    const res = await fetch(`${API_BASE}/results/student/${studentId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) throw new Error('Results failed');
     return res.json();
   },
   async resultsPdf(token, studentId) {
-    const res = await fetch(`/api/results/student/${studentId}/pdf`, {
+    const res = await fetch(`${API_BASE}/results/student/${studentId}/pdf`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) throw new Error('PDF failed');
     return res.blob();
   },
   async courses(token) {
-    const res = await fetch('/api/courses', { headers: { Authorization: `Bearer ${token}` } });
+    const res = await fetch(`${API_BASE}/courses`, { headers: { Authorization: `Bearer ${token}` } });
     if (!res.ok) throw new Error('Courses failed');
     return res.json();
   },
   async students(token) {
-    const res = await fetch('/api/students', { headers: { Authorization: `Bearer ${token}` } });
+    const res = await fetch(`${API_BASE}/students`, { headers: { Authorization: `Bearer ${token}` } });
     if (!res.ok) throw new Error('Students failed');
     return res.json();
   },
   async assessmentsByCourse(token, courseId) {
-    const res = await fetch(`/api/assessments/course/${courseId}`, { headers: { Authorization: `Bearer ${token}` } });
+    const res = await fetch(`${API_BASE}/assessments/course/${courseId}`, { headers: { Authorization: `Bearer ${token}` } });
     if (!res.ok) throw new Error('Assessments failed');
     return res.json();
   },
   async createAssessment(token, courseId, body) {
-    const res = await fetch(`/api/assessments/course/${courseId}`, {
+    const res = await fetch(`${API_BASE}/assessments/course/${courseId}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       body: JSON.stringify(body),
@@ -56,7 +58,7 @@ const api = {
     return res.json();
   },
   async updateAssessment(token, id, body) {
-    const res = await fetch(`/api/assessments/${id}`, {
+    const res = await fetch(`${API_BASE}/assessments/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       body: JSON.stringify(body),
@@ -65,27 +67,27 @@ const api = {
     return res.json();
   },
   async deleteAssessment(token, id) {
-    const res = await fetch(`/api/assessments/${id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
+    const res = await fetch(`${API_BASE}/assessments/${id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
     if (!res.ok) throw new Error('Delete assessment failed');
     return res.json();
   },
   async enrollmentsByCourse(token, courseId) {
-    const res = await fetch(`/api/enrollments/course/${courseId}`, { headers: { Authorization: `Bearer ${token}` } });
+    const res = await fetch(`${API_BASE}/enrollments/course/${courseId}`, { headers: { Authorization: `Bearer ${token}` } });
     if (!res.ok) throw new Error('Enrollments failed');
     return res.json();
   },
   async marksByCourse(token, courseId) {
-    const res = await fetch(`/api/marks/course/${courseId}`, { headers: { Authorization: `Bearer ${token}` } });
+    const res = await fetch(`${API_BASE}/marks/course/${courseId}`, { headers: { Authorization: `Bearer ${token}` } });
     if (!res.ok) throw new Error('Marks failed');
     return res.json();
   },
   async exportMarks(token, courseId) {
-    const res = await fetch(`/api/marks/export/${courseId}`, { headers: { Authorization: `Bearer ${token}` } });
+    const res = await fetch(`${API_BASE}/marks/export/${courseId}`, { headers: { Authorization: `Bearer ${token}` } });
     if (!res.ok) throw new Error('Export failed');
     return res.text();
   },
   async importMarks(token, courseId, csvText) {
-    const res = await fetch(`/api/marks/import/${courseId}`, {
+    const res = await fetch(`${API_BASE}/marks/import/${courseId}`, {
       method: 'POST',
       headers: { 'Content-Type': 'text/csv', Authorization: `Bearer ${token}` },
       body: csvText,
@@ -94,7 +96,7 @@ const api = {
     return res.json();
   },
   async saveMark(token, payload) {
-    const res = await fetch('/api/marks', {
+    const res = await fetch(`${API_BASE}/marks`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       body: JSON.stringify(payload),
@@ -103,7 +105,7 @@ const api = {
     return res.json();
   },
   async createStudent(token, body) {
-    const res = await fetch('/api/students', {
+    const res = await fetch(`${API_BASE}/students`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       body: JSON.stringify(body),
@@ -112,7 +114,7 @@ const api = {
     return res.json();
   },
   async createCourse(token, body) {
-    const res = await fetch('/api/courses', {
+    const res = await fetch(`${API_BASE}/courses`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       body: JSON.stringify(body),
@@ -121,7 +123,7 @@ const api = {
     return res.json();
   },
   async enrollStudent(token, body) {
-    const res = await fetch('/api/enrollments', {
+    const res = await fetch(`${API_BASE}/enrollments`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       body: JSON.stringify(body),
@@ -130,7 +132,7 @@ const api = {
     return res.json();
   },
   async createStudentLogin(token, body) {
-    const res = await fetch('/api/users/student', {
+    const res = await fetch(`${API_BASE}/users/student`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       body: JSON.stringify(body),
