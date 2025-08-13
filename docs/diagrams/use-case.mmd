@@ -1,0 +1,30 @@
+flowchart LR
+  actorAdmin["Admin"]
+  actorTeacher["Teacher"]
+  actorStudent["Student"]
+
+  ucAuth["Authenticate / Login"]
+  ucManageUsers["Manage Users"]
+  ucManageStudents["Create / Update Students"]
+  ucManageCourses["Create / Update Courses"]
+  ucEnroll["Enroll Students"]
+  ucAssessments["Manage Assessments"]
+  ucMarks["Enter / Import Marks"]
+  ucResults["View Results"]
+  ucPDF["Download PDF"]
+
+  actorAdmin --> ucAuth
+  actorTeacher --> ucAuth
+  actorStudent --> ucAuth
+
+  actorAdmin --> ucManageUsers
+  actorAdmin --> ucManageStudents
+  actorAdmin --> ucManageCourses
+  actorAdmin --> ucEnroll
+
+  actorTeacher --> ucAssessments
+  actorTeacher --> ucMarks
+  actorTeacher --> ucResults
+
+  actorStudent --> ucResults
+  actorStudent --> ucPDF

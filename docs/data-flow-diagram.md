@@ -1,0 +1,66 @@
+# Data Flow Diagram (Level 1)
+
+![Data Flow Diagram](./diagrams/dfd.svg)
+
+```mermaid
+flowchart LR
+  subgraph External
+    Admin[[Admin]]
+    Teacher[[Teacher]]
+    Student[[Student]]
+  end
+
+  subgraph Processes
+    Auth[(Auth Service)]
+    UserMgmt[(User Management)]
+    StudentMgmt[(Student Management)]
+    CourseMgmt[(Course Management)]
+    EnrollmentProc[(Enrollment Management)]
+    AssessmentProc[(Assessment Management)]
+    MarksProc[(Marks Entry / Import CSV)]
+    ResultsProc[(Results Compute)]
+    ExportProc[(Export PDF / CSV)]
+  end
+
+  subgraph DataStores
+    DSUsers[(Users)]
+    DSStudents[(Students)]
+    DSCourses[(Courses)]
+    DSEnrollments[(Enrollments)]
+    DSAssessments[(Assessments)]
+    DSMarks[(Marks)]
+  end
+
+  Admin --> Auth
+  Teacher --> Auth
+  Student --> Auth
+
+  Admin --> UserMgmt
+  Admin --> StudentMgmt
+  Admin --> CourseMgmt
+  Admin --> EnrollmentProc
+
+  Teacher --> AssessmentProc
+  Teacher --> MarksProc
+  Teacher --> ResultsProc
+
+  Student --> ResultsProc
+  Student --> ExportProc
+
+  Auth --> DSUsers
+
+  UserMgmt --> DSUsers
+  StudentMgmt --> DSStudents
+  CourseMgmt --> DSCourses
+  EnrollmentProc --> DSEnrollments
+  AssessmentProc --> DSAssessments
+  MarksProc --> DSMarks
+
+  ResultsProc --> DSMarks
+  ResultsProc --> DSAssessments
+  ResultsProc --> DSCourses
+  ResultsProc --> DSEnrollments
+  ResultsProc --> DSStudents
+
+  ExportProc --> ResultsProc
+```

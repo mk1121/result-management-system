@@ -1,0 +1,49 @@
+erDiagram
+  USER {
+    string _id
+    string email
+    string passwordHash
+    string role
+    date createdAt
+  }
+  STUDENT {
+    string _id
+    string name
+    string email
+    string rollNo
+  }
+  COURSE {
+    string _id
+    string code
+    string title
+    number creditHours
+    string teacherId
+  }
+  ENROLLMENT {
+    string _id
+    string studentId
+    string courseId
+    date enrolledAt
+  }
+  ASSESSMENT {
+    string _id
+    string courseId
+    string title
+    number weightPercent
+    number maxScore
+  }
+  MARK {
+    string _id
+    string studentId
+    string courseId
+    string assessmentId
+    number score
+  }
+
+  STUDENT ||--o{ ENROLLMENT : enrolls
+  COURSE  ||--o{ ENROLLMENT : has
+  COURSE  ||--o{ ASSESSMENT : has
+  STUDENT ||--o{ MARK : receives
+  ASSESSMENT ||--o{ MARK : for
+  COURSE ||--o{ MARK : context
+  USER o|--o| STUDENT : mapsTo
